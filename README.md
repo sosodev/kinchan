@@ -119,6 +119,8 @@ end
 
 Task's do not need to be in the same scope, as long as the task exists Kinchan will find and run it when appropriate
 
+### [Examples](https://github.com/sosodev/kinchan-examples)
+
 ### Setting Selenium Browser Options
 
 before running your task you can modify the selenium browser options like so
