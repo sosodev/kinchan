@@ -1,5 +1,5 @@
 # [Kinchan](https://itazuranakiss.fandom.com/wiki/Kinnosuke_Ikezawa)
-## Composable browser automation for Ruby.
+## Composable browser automation with Ruby.
 
 ### Requirements
 
