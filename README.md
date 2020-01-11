@@ -126,7 +126,7 @@ Task's do not need to be in the same scope, as long as the task exists Kinchan w
 before running your task you can modify the selenium browser options like so
 
 ```ruby
-Kinchan::Task.browser = :chrome
-Kinchan::Task.browser_options = Selenium::WebDriver::Chrome::Options.new
-Kinchan::Task.browser_options.add_argument('--headless')
+Kinchan.browser = :chrome
+Kinchan.browser_options = Selenium::WebDriver::Chrome::Options.new
+Kinchan.browser_options.add_argument('--headless')
 ```

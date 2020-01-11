@@ -27,4 +27,6 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'selenium-webdriver', ['~> 3.142.6']
   spec.add_runtime_dependency 'require_all', ['~> 3.0.0']
+
+  spec.add_development_dependency 'rspec', ['~> 3.9.0']
 end
