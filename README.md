@@ -1,5 +1,6 @@
 # [Kinchan](https://itazuranakiss.fandom.com/wiki/Kinnosuke_Ikezawa)
 ## Composable browser automation with Ruby.
+[![Gem Version](https://badge.fury.io/rb/kinchan.svg)](https://badge.fury.io/rb/kinchan)
 
 ### Requirements
 
