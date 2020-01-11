@@ -1,5 +1,5 @@
 # [Kinchan](https://itazuranakiss.fandom.com/wiki/Kinnosuke_Ikezawa)
-## Composable browser automation for Ruby.
+## Composable browser automation with Ruby.
 
 ### Requirements
 
@@ -77,7 +77,7 @@ That's all it takes to run a task. Kinchan handles the rest.
 
 ### Passing Data to a Task
 
-A task's initialize function can accept options, just don't forget to call super
+A task's initialize method can accept options, just don't forget to call super
 
 e.g.
 
