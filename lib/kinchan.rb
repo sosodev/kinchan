@@ -47,10 +47,12 @@ module Kinchan
     end
 
     def self.start_browser
-      if Kinchan.browser_options.nil?
-        @@browser_webdriver = Selenium::WebDriver.for Kinchan.browser
-      else
-        @@browser_webdriver = Selenium::WebDriver.for(Kinchan.browser, options: Kinchan.browser_options)
+      if @@browser_webdriver.nil?
+        if Kinchan.browser_options.nil?
+          @@browser_webdriver = Selenium::WebDriver.for Kinchan.browser
+        else
+          @@browser_webdriver = Selenium::WebDriver.for(Kinchan.browser, options: Kinchan.browser_options)
+        end
       end
     end
 
