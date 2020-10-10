@@ -1,5 +1,7 @@
 # frozen_string_literal: true
+
 require_relative '../lib/kinchan'
+require_relative 'tasks/google'
 
 RSpec.describe Kinchan do
   it 'defines the default browser' do
@@ -18,6 +20,16 @@ RSpec.describe Kinchan do
   it 'allows the browser options to be defined' do
     Kinchan.browser_options = :dummy_options
     expect(Kinchan.browser_options).to eq(:dummy_options)
+  end
+
+  it 'can restore the default browser settings' do
+    Kinchan.restore_defaults
+    expect(Kinchan.browser).to eq(:chrome)
+    expect(Kinchan.browser_options).to eq(nil)
+  end
+
+  it 'can run the test tasks' do
+    Google::HighLevel::SearchForTerm.new(query: 'kinchan').run
   end
 end
 

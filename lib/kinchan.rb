@@ -4,6 +4,7 @@ require 'kinchan/version'
 require 'selenium-webdriver'
 require 'require_all'
 
+# Top-level module contains all the juicy bits for the gem
 module Kinchan
   @browser = :chrome
   @browser_options = nil
@@ -12,18 +13,24 @@ module Kinchan
     @browser
   end
 
-  def self.browser= b
-    @browser = b
+  def self.browser=(browser)
+    @browser = browser
   end
 
   def self.browser_options
     @browser_options
   end
 
-  def self.browser_options= bo
-    @browser_options = bo
+  def self.browser_options=(browser_options)
+    @browser_options = browser_options
   end
 
+  def self.restore_defaults
+    @browser = :chrome
+    @browser_options = nil
+  end
+
+  # A single unit of automation in Kinchan
   class Task
     singleton_class.send(:attr_accessor, :browser)
     singleton_class.send(:attr_accessor, :browser_options)
@@ -35,7 +42,7 @@ module Kinchan
       @after_tasks = []
       @options = options
 
-      Task.start_browser
+      Task.start_browser unless defined?(@@browser_webdriver)
     end
 
     def self.inherited(subclass)
@@ -47,35 +54,47 @@ module Kinchan
     end
 
     def self.start_browser
-      if @@browser_webdriver.nil?
-        if Kinchan.browser_options.nil?
-          @@browser_webdriver = Selenium::WebDriver.for Kinchan.browser
-        else
-          @@browser_webdriver = Selenium::WebDriver.for(Kinchan.browser, options: Kinchan.browser_options)
-        end
-      end
+      browser = Kinchan.browser
+      browser_options = Kinchan.browser_options
+
+      @@browser_webdriver = if browser_options.nil?
+                              Selenium::WebDriver.for browser
+                            else
+                              Selenium::WebDriver.for(browser, options: browser_options)
+                            end
     end
 
     def self.restart_browser
-      unless @@browser_webdriver.nil?
-        @@browser_webdriver.close
-        @@browser_webdriver = Selenium::WebDriver.for Kinchan.browser
+      return if @@browser_webdriver.nil?
+
+      @@browser_webdriver.close
+      @@browser_webdriver = Selenium::WebDriver.for Kinchan.browser
+    end
+
+    def execute(_browser); end
+
+    def run
+      run_tasks(@before_tasks)
+      execute(@@browser_webdriver)
+      run_tasks(@after_tasks)
+    end
+
+    private
+
+    def get_task(task_hash)
+      task = Task.find_task(task_hash[:task])
+      options = task_hash[:options]
+
+      if options.nil?
+        task.new
+      else
+        task.new(**options)
       end
     end
 
-    def execute(browser); end
-
-    def run
-      @before_tasks.each do |task_hash|
-        task = Task.find_task(task_hash[:task])
-        task.new(**task_hash[:options]).public_send('run') unless task.nil?
-      end
-
-      execute(@@browser_webdriver)
-
-      @after_tasks.each do |task_hash|
-        task = Task.find_task(task_hash[:task])
-        task.new(**task_hash[:options]).public_send('run') unless task.nil?
+    def run_tasks(tasks)
+      tasks.each do |task_hash|
+        get_task(task_hash)&.public_send('run')
       end
     end
   end
